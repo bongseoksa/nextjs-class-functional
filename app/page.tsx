@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -14,10 +14,19 @@ export default function Home() {
 }
 
 export const FunctionComp = (props: { initNumber: number }) => {
+  const [number, setNumber] = useState<number>(props.initNumber);
+
   return (
     <div className={styles.container}>
       <h2>function style Component</h2>
-      <p>Number : {props.initNumber}</p>
+      <p>Number : {number}</p>
+      <input
+        type="button"
+        value="random"
+        onClick={() => {
+          setNumber(Math.random());
+        }}
+      />
     </div>
   );
 };
