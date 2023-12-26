@@ -27,6 +27,10 @@ export const FunctionComp = (props: { initNumber: number }) => {
   const setDate = dateState[1];
 
   useEffect(() => {
+    console.log(
+      `%cfunc => useEffect (componentDidMount & componentDidUpdate) ${++funcId}`,
+      funcStyle,
+    );
     setDate(new Date().toString());
   }, []);
 
