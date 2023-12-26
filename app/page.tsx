@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './page.module.css';
 
 export default function Home() {
@@ -15,15 +15,22 @@ export default function Home() {
 
 export const FunctionComp = (props: { initNumber: number }) => {
   const [number, setNumber] = useState<number>(props.initNumber);
+  const funcStyle = `color:blue`;
+  let funcId = 0;
 
   // useSate 활용1.
-  // const [date, setDate] = useState<string>(new Date().toString());
+  // const [date, setDate] = useState<string>();
 
   // useState 활용2. 활용1과 동일한 기능
-  const dateState = useState<string>(new Date().toString());
+  const dateState = useState<string>('');
   let date = dateState[0];
   const setDate = dateState[1];
 
+  useEffect(() => {
+    setDate(new Date().toString());
+  }, []);
+
+  console.log(`%cfunc => render ${++funcId}`, funcStyle);
   return (
     <div className={styles.container}>
       <h2>function style Component</h2>
@@ -48,10 +55,23 @@ export const FunctionComp = (props: { initNumber: number }) => {
 };
 
 export class ClassComp extends React.Component {
+  classStyle = `color:red`;
+
+  // state
   state: Readonly<{}> = {
     number: this.props.initNumber,
-    date: new Date().toString(),
+    date: '',
   };
+
+  // lifeCycle
+  // componentWillMount is deprecated in 16.9
+  // componentWillMount(): void {
+  //   console.log(`%cclass -> componentWillMount`, this.classStyle);
+  // }
+  componentDidMount(): void {
+    console.log(`%cclass -> componentDidMount`, this.classStyle);
+    this.setState({ date: new Date().toString() });
+  }
 
   render() {
     console.log('class props', this.props);
