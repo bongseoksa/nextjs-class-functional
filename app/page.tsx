@@ -4,11 +4,23 @@ import React, { useEffect, useState } from 'react';
 import styles from './page.module.css';
 
 export default function Home() {
+  const [funcShow, setFuncShow] = useState<boolean>(true);
+  const [classShow, setClassShow] = useState<boolean>(true);
   return (
     <main className={styles.container}>
       <h1>Hello world</h1>
-      <FunctionComp initNumber={2}></FunctionComp>
-      <ClassComp initNumber={2}></ClassComp>
+      <input
+        type="button"
+        value="remove func"
+        onClick={() => setFuncShow(false)}
+      />
+      <input
+        type="button"
+        value="remove class"
+        onClick={() => setClassShow(false)}
+      />
+      {funcShow ? <FunctionComp initNumber={2}></FunctionComp> : null}
+      {classShow ? <ClassComp initNumber={2}></ClassComp> : null}
     </main>
   );
 }
@@ -26,18 +38,46 @@ export const FunctionComp = (props: { initNumber: number }) => {
   let date = dateState[0];
   const setDate = dateState[1];
 
+  // 컴포넌트가 mount 되었을 때, update될 때, unmount 될 때 실행
   useEffect(() => {
     console.log(
       `%cfunc => useEffect (componentDidMount & componentDidUpdate) ${++funcId}`,
       funcStyle,
     );
-    setDate(new Date().toString());
 
-    // useEffect가 재호출 되기 전에 초기화 작업이 필요한 경우 useEffect의 return 함수 사용. cleanup
+    // cleanup
     return () => {
       console.log(`%cfunc => useEffect return ${++funcId}`, funcStyle);
     };
   });
+
+  // 컴포넌트가 mount 되었을 때, unmount 될 때 실행
+  useEffect(() => {
+    console.log(
+      `%cfunc => useEffect (componentDidMount) ${++funcId}`,
+      funcStyle,
+    );
+    setDate(new Date().toString());
+
+    // cleanup
+    return () => {
+      console.log(
+        `%cfunc => useEffect return (componentWillUnmount) ${++funcId}`,
+        funcStyle,
+      );
+    };
+  }, []);
+
+  // number 값이 변경될 때 실행
+  useEffect(() => {
+    console.log(`%cfunc => useEffect number ${++funcId}`, funcStyle);
+    setDate(new Date().toString());
+
+    // cleanup
+    return () => {
+      console.log(`%cfunc => useEffect number return ${++funcId}`, funcStyle);
+    };
+  }, [number]);
 
   console.log(`%cfunc => render ${++funcId}`, funcStyle);
   return (
