@@ -32,7 +32,12 @@ export const FunctionComp = (props: { initNumber: number }) => {
       funcStyle,
     );
     setDate(new Date().toString());
-  }, []);
+
+    // useEffect가 재호출 되기 전에 초기화 작업이 필요한 경우 useEffect의 return 함수 사용. cleanup
+    return () => {
+      console.log(`%cfunc => useEffect return ${++funcId}`, funcStyle);
+    };
+  });
 
   console.log(`%cfunc => render ${++funcId}`, funcStyle);
   return (
